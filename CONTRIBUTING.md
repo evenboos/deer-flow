@@ -236,9 +236,9 @@ Nginx (port 2026) ← Unified entry point
 cd backend
 uv run pytest
 
-# Frontend tests
+# Frontend checks
 cd frontend
-pnpm test
+pnpm check
 ```
 
 ### PR Regression Checks
