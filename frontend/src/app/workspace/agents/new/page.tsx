@@ -26,6 +26,8 @@ type Step = "name" | "chat";
 
 const NAME_RE = /^[A-Za-z0-9-]+$/;
 
+const noopAsync = () => Promise.resolve();
+
 export default function NewAgentPage() {
   const { t } = useI18n();
   const router = useRouter();
@@ -186,7 +188,16 @@ export default function NewAgentPage() {
   // ── Step 2: chat ───────────────────────────────────────────────────────────
 
   return (
-    <ThreadContext.Provider value={{ thread }}>
+    <ThreadContext.Provider
+      value={{
+        thread,
+        editHumanMessage: noopAsync,
+        regenerateTurn: noopAsync,
+        selectAssistantVersion: noopAsync,
+        stopThread: thread.stop,
+        isThreadStreaming: thread.isLoading,
+      }}
+    >
       <ArtifactsProvider>
         <div className="flex size-full flex-col">
           {header}

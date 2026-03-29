@@ -40,7 +40,7 @@ export default function AgentChatPage() {
   const { threadId, isNewThread, setIsNewThread } = useThreadChat();
 
   const { showNotification } = useNotification();
-  const [thread, sendMessage] = useThreadStream({
+  const [thread, sendMessage, , threadActions] = useThreadStream({
     threadId: isNewThread ? undefined : threadId,
     context: { ...settings.context, agent_name: agent_name },
     onStart: () => {
@@ -82,7 +82,16 @@ export default function AgentChatPage() {
   }, [thread]);
 
   return (
-    <ThreadContext.Provider value={{ thread }}>
+    <ThreadContext.Provider
+      value={{
+        thread,
+        editHumanMessage: threadActions.editHumanMessage,
+        regenerateTurn: threadActions.regenerateTurn,
+        selectAssistantVersion: threadActions.selectAssistantVersion,
+        stopThread: threadActions.stopThread,
+        isThreadStreaming: threadActions.isThreadStreaming,
+      }}
+    >
       <ChatBox threadId={threadId}>
         <div className="relative flex size-full min-h-0 justify-between">
           <header

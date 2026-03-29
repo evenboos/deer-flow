@@ -34,7 +34,7 @@ export default function ChatPage() {
 
   const { showNotification } = useNotification();
 
-  const [thread, sendMessage, isUploading] = useThreadStream({
+  const [thread, sendMessage, isUploading, threadActions] = useThreadStream({
     threadId: isNewThread ? undefined : threadId,
     context: settings.context,
     isMock,
@@ -72,7 +72,17 @@ export default function ChatPage() {
   }, [thread]);
 
   return (
-    <ThreadContext.Provider value={{ thread, isMock }}>
+    <ThreadContext.Provider
+      value={{
+        thread,
+        isMock,
+        editHumanMessage: threadActions.editHumanMessage,
+        regenerateTurn: threadActions.regenerateTurn,
+        selectAssistantVersion: threadActions.selectAssistantVersion,
+        stopThread: threadActions.stopThread,
+        isThreadStreaming: threadActions.isThreadStreaming,
+      }}
+    >
       <ChatBox threadId={threadId}>
         <div className="relative flex size-full min-h-0 justify-between">
           <header
